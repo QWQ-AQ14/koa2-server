@@ -3,7 +3,7 @@
  */
 
 const seq = require('./seq')
-
+require('./model/index')
 seq.authenticate().then(() => {
     console.log('auth ok');
 }).catch(() => {

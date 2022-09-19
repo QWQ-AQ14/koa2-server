@@ -11,11 +11,18 @@ const redisStore = require('koa-redis')
 // 引入配置
 const { REDIS_CONF } = require('./config/db')
 // 引入环境
-const { isProd } = require('./untils/env')
-
+const { isProd } = require('./utils/env')
+// l路由
 const index = require('./routes/index')
-const users = require('./routes/users')
-
+const atAPIRouter = require('./routes/api/blog-at')
+const squareAPIRouter = require('./routes/api/blog-square')
+const profileAPIRouter = require('./routes/api/blog-profile')
+const homeAPIRouter = require('./routes/api/blog-home')
+const blogViewRouter = require('./routes/view/blog')
+const utilsAPIRouter = require('./routes/api/utils')
+const userViewRouter = require('./routes/view/user')
+const userAPIRouter = require('./routes/api/user')
+const errorViewRouter = require('./routes/view/error')
 // error handler
 onerror(app)
 
@@ -56,9 +63,17 @@ app.use(session({
 // })
 
 // routes
-app.use(index.routes(), index.allowedMethods())
-app.use(users.routes(), users.allowedMethods())
+app.use(atAPIRouter.routes(), atAPIRouter.allowedMethods())
+app.use(squareAPIRouter.routes(), squareAPIRouter.allowedMethods())
+app.use(profileAPIRouter.routes(), profileAPIRouter.allowedMethods())
+app.use(homeAPIRouter.routes(), homeAPIRouter.allowedMethods())
+app.use(blogViewRouter.routes(), blogViewRouter.allowedMethods())
+app.use(utilsAPIRouter.routes(), utilsAPIRouter.allowedMethods())
+app.use(userAPIRouter.routes(), userAPIRouter.allowedMethods())
+app.use(userViewRouter.routes(), userViewRouter.allowedMethods())
+app.use(errorViewRouter.routes(), errorViewRouter.allowedMethods()) // 404 路由注册到最后面
 
+app.use(errorViewRouter.routes(), errorViewRouter.allowedMethods()) // 404 路由注册到最后面
 // error-handling
 app.on('error', (err, ctx) => {
   console.error('server error', err, ctx)
